@@ -1,8 +1,70 @@
+const cells = document.querySelectorAll(".cell"); 
+const player1NameDisplay = document.getElementById("player1_info_name"); 
+const player2NameDisplay = document.getElementById("player2_info_name"); 
+const player1Name = prompt("Welcome to Tic Tac Toe!\nPlayer 1, Enter your name:"); 
+const player2Name = prompt("Player 2, Enter your name: "); 
+let flag = true; 
+
+const player1 = createUser(player1Name, "X"); 
+const player2 = createUser(player2Name, "O"); 
+
+if (player1.name == null) {
+    player1NameDisplay.textContent = `Player 1`;
+} 
+
+if (player2.name == null) {
+    player2NameDisplay.textContent = `Player 2`; 
+}
+
+if (player1.name != null) {
+    player1NameDisplay.textContent = `${player1.name}`;  
+}
+
+if (player2.name != null) {
+    player2NameDisplay.textContent =`${player2.name}`; 
+}
+
 // gameBoard object that stores game board array
 const gameBoard = (function() {
     const board = [["", "", ""], ["", "", ""], ["", "", ""]];
     return {board}; 
 })(); 
+
+// cells.forEach((cell) => {
+//     cells.addEventListener("click", () => {
+//         //First turn is player 1's 
+//         //If marker is "X", next marker is "O" and vice versa 
+//         //For every click, log it into the gameBoard array 
+//         //If the number of markers is equal to or more than 5, check for win condition 
+//         //If a player win, display a message board and award point 
+//         if (flag == true) {
+//             cell.textContent = player1.marker; 
+//             flag = false; 
+//             console.log(flag); 
+//         } else {
+//             cell.textContent = player2.marker; 
+//             flag = true; 
+//             console.log(flag); 
+//         }
+//     })
+// })
+
+function handleCellClick(e) {
+    if (flag == true) {
+        e.target.textContent = player1.marker; 
+        flag = false; 
+        console.log(flag); 
+    } else {
+        e.target.textContent = player2.marker; 
+        flag = true; 
+        console.log(flag); 
+    }
+        e.target.removeEventListener("click", handleCellClick);
+}
+
+cells.forEach((cell) => {
+    cell.addEventListener("click", handleCellClick);
+});
 
 
 // Function to generate player object
@@ -16,8 +78,9 @@ function createUser (name, marker) {
     const getScore = () => score; 
     const addScore = () => score++; 
 
-    return {getName, getMarker, getScore, addScore}; 
-}
+    return {name, marker, getName, getMarker, getScore, addScore}; 
+}   
+
 
 // Function to add marker to gameboard 
 function addMarker(array, row, col, marker) {
@@ -76,3 +139,4 @@ function clearBoard(array) {
 //2. Player 2 decides is O, player 2 picks where to mark 
 //3. repeat 1 and 2 until there is a match horizontally/diagonally/veritcally or all squares are filled but no match, then it's a tie. 
 //4. Add points to winner 
+
